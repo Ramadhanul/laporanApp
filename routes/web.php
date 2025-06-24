@@ -26,9 +26,8 @@ Route::get('/public/data', [PublicController::class, 'data'])->name('public.data
 Route::get('/public/chatbot', [ChatbotController::class, 'index'])->name('public.chatbot');
 Route::post('/public/chatbot/ask', [ChatbotController::class, 'ask'])->name('public.chatbot.ask');
 
-
 Route::get('/', function () {
-    return view('welcome');
+    return Redirect::to('/public');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
@@ -37,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/', [MutasiBarangController::class, 'index'])->name('mutasi.index');
+    Route::get('/data', [MutasiBarangController::class, 'index'])->name('mutasi.index');
     Route::get('/create', [MutasiBarangController::class, 'create'])->name('mutasi.create');
     Route::post('/store', [MutasiBarangController::class, 'store'])->name('mutasi.store');
     Route::get('/{id}/edit', [MutasiBarangController::class, 'edit'])->name('mutasi.edit');

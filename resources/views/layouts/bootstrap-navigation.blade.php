@@ -1,8 +1,10 @@
 <nav class="navbar navbar-expand-lg" style="background-color: #2e86de; padding: 1rem 2rem;">
     <div class="container-fluid">
-        <a class="navbar-brand text-white fw-bold" href="#" style="font-size: 1.4rem;">
-            🏥 MUTASI BARANG RUMAH SAKIT
+        <a class="navbar-brand fw-bold d-flex align-items-center text-white" href="#" style="font-size: 1.2rem;">
+            <img src="{{ asset('img/logoyarsi.png') }}" alt="Logo" height="32" class="me-2">
+            MUTASI BARANG YARSISUMBAR
         </a>
+
 
         <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>

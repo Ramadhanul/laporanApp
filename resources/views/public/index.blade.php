@@ -65,8 +65,9 @@
 
 {{-- NAV --}}
 <header>
-    <div style="font-size: 1.5rem; font-weight: bold;">
-        🏥 RUMAH SAKIT
+    <div style="font-size: 1.5rem; font-weight: bold;" class="d-flex align-items-center">
+        <img src="{{ asset('img/logoyarsi.png') }}" alt="Logo RS" height="36" class="me-2">
+        MUTASI BARANG YARSISUMBAR
     </div>
     <nav>
         <a href="{{ route('public.index') }}" class="{{ request()->is('public') ? 'active' : '' }}">Dashboard</a>

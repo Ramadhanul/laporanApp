@@ -148,9 +148,11 @@
 <body>
 
 <header style="background-color: #2e86de; padding: 1rem 2rem; color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-    <div style="font-size: 1.5rem; font-weight: bold;">
-        🏥 MUTASI BARANG RUMAH SAKIT
+    <div style="font-size: 1.5rem; font-weight: bold;" class="d-flex align-items-center">
+        <img src="{{ asset('img/logoyarsi.png') }}" alt="Logo RS" height="36" class="me-2">
+        MUTASI BARANG YARSISUMBAR
     </div>
+
     <nav style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
         <a href="{{ route('public.index') }}" style="color: white; text-decoration: none; font-weight: {{ request()->is('public') ? '600' : '400' }}">Dashboard</a>
         <a href="{{ route('public.data') }}" style="color: white; text-decoration: none; font-weight: {{ request()->is('public/data') ? '600' : '400' }}">Data</a>
