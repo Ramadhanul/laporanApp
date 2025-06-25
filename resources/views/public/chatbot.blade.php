@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chatbot Informasi Mutasi Barang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
@@ -14,18 +15,27 @@
             color: #333;
         }
 
-        .header {
+        header {
             background-color: #2e86de;
             padding: 1rem 2rem;
             color: white;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
         }
 
-        .header h1 {
-            font-size: 1.5rem;
-            margin: 0;
+        header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 400;
+        }
+
+        header nav a:hover,
+        header nav a.active {
+            font-weight: 600;
+            text-decoration: underline;
         }
 
         .chat-container {
@@ -147,84 +157,84 @@
 </head>
 <body>
 
-<header style="background-color: #2e86de; padding: 1rem 2rem; color: white; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+<header>
     <div style="font-size: 1.5rem; font-weight: bold;" class="d-flex align-items-center">
         <img src="{{ asset('img/logoyarsi.png') }}" alt="Logo RS" height="36" class="me-2">
         MUTASI BARANG YARSISUMBAR
     </div>
-
-    <nav style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
-        <a href="{{ route('public.index') }}" style="color: white; text-decoration: none; font-weight: {{ request()->is('public') ? '600' : '400' }}">Dashboard</a>
-        <a href="{{ route('public.data') }}" style="color: white; text-decoration: none; font-weight: {{ request()->is('public/data') ? '600' : '400' }}">Data</a>
-        <a href="{{ route('public.chatbot') }}" style="color: white; text-decoration: none; font-weight: {{ request()->is('public/chatbot') ? '600' : '400' }}">Chatbot</a>
+    <nav>
+        <a href="{{ route('public.index') }}" class="{{ request()->is('public') ? 'active' : '' }}">Dashboard</a>
+        <a href="{{ route('public.data') }}" class="{{ request()->is('public/data') ? 'active' : '' }}">Data</a>
+        <a href="{{ route('public.chatbot') }}" class="{{ request()->is('public/chatbot') ? 'active' : '' }}">Chatbot</a>
     </nav>
 </header>
 
-    <div class="chat-container">
-        <div class="chat-header">Asisten Virtual RS - Chatbot Mutasi Barang</div>
+<div class="chat-container">
+    <div class="chat-header">Asisten Virtual RS - Chatbot Mutasi Barang</div>
 
-        <div id="chat-box" class="chat-box">
-            {{-- Pesan akan ditambahkan lewat JS --}}
-        </div>
-
-        <div class="chat-footer">
-            <form id="chat-form">
-                <input type="text" id="question" placeholder="Tanyakan sesuatu..." required>
-                <button type="submit">Kirim</button>
-            </form>
-        </div>
+    <div id="chat-box" class="chat-box">
+        {{-- Pesan akan ditambahkan lewat JS --}}
     </div>
 
-    <script>
-        const chatBox = document.getElementById('chat-box');
-        const form = document.getElementById('chat-form');
-        const input = document.getElementById('question');
+    <div class="chat-footer">
+        <form id="chat-form">
+            <input type="text" id="question" placeholder="Tanyakan sesuatu..." required>
+            <button type="submit">Kirim</button>
+        </form>
+    </div>
+</div>
 
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const question = input.value.trim();
-            if (!question) return;
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('question');
 
-            appendMessage(question, 'user');
-            input.value = '';
-            input.disabled = true;
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const question = input.value.trim();
+        if (!question) return;
 
-            try {
-                const res = await fetch("{{ route('public.chatbot.ask') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ question })
-                });
+        appendMessage(question, 'user');
+        input.value = '';
+        input.disabled = true;
 
-                const data = await res.json();
-                appendMessage(data.reply, 'bot');
-            } catch (err) {
-                appendMessage("⚠️ Maaf, server tidak merespons.", 'bot');
-            } finally {
-                input.disabled = false;
-            }
-        });
+        try {
+            const res = await fetch("{{ route('public.chatbot.ask') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ question })
+            });
 
-        function appendMessage(text, type) {
-            const container = document.createElement('div');
-            container.className = `bubble-container ${type}`;
-
-            const avatar = document.createElement('div');
-            avatar.className = `avatar ${type === 'bot' ? 'bot-avatar' : 'user-avatar'}`;
-
-            const bubble = document.createElement('div');
-            bubble.className = `bubble ${type}-msg`;
-            bubble.innerText = text;
-
-            container.appendChild(avatar);
-            container.appendChild(bubble);
-            chatBox.appendChild(container);
-
-            chatBox.scrollTop = chatBox.scrollHeight;
+            const data = await res.json();
+            appendMessage(data.reply, 'bot');
+        } catch (err) {
+            appendMessage("⚠️ Maaf, server tidak merespons.", 'bot');
+        } finally {
+            input.disabled = false;
         }
-    </script>
+    });
+
+    function appendMessage(text, type) {
+        const container = document.createElement('div');
+        container.className = `bubble-container ${type}`;
+
+        const avatar = document.createElement('div');
+        avatar.className = `avatar ${type === 'bot' ? 'bot-avatar' : 'user-avatar'}`;
+
+        const bubble = document.createElement('div');
+        bubble.className = `bubble ${type}-msg`;
+        bubble.innerText = text;
+
+        container.appendChild(avatar);
+        container.appendChild(bubble);
+        chatBox.appendChild(container);
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
